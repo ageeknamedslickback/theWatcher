@@ -11,6 +11,7 @@ import (
 	"time"
 
 	v1 "github.com/ageeknamedslickback/theWatcher/watcher/internal/api/v1"
+	"github.com/ageeknamedslickback/theWatcher/watcher/internal/middlewares"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -20,7 +21,7 @@ const DefaultTimeout = 3 * time.Second
 func NewServer(addr string) (*http.Server, error) {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/health", v1.HealthHandler)
+	mux.Handle("/health", middlewares.ParseToken(http.HandlerFunc(v1.HealthHandler)))
 	mux.HandleFunc("/login", v1.LoginHandler)
 
 	return &http.Server{
