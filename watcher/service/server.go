@@ -21,6 +21,7 @@ func NewServer(addr string) (*http.Server, error) {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/health", v1.HealthHandler)
+	mux.HandleFunc("/login", v1.LoginHandler)
 
 	return &http.Server{
 		Addr:              addr,
