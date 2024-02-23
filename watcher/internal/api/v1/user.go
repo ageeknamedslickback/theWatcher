@@ -9,6 +9,12 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
+// BearerToken represents a valid bearer token
+type BearerToken struct {
+	Token string `json:"token"`
+	Type  string `json:"type"`
+}
+
 // LoginHandler represents a dummy login handler
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
@@ -29,5 +35,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(fmt.Sprintf(`{"token": %s}`, tokenString))
+	json.NewEncoder(w).Encode(BearerToken{
+		Token: tokenString,
+		Type:  "Bearer",
+	})
 }
